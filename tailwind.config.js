@@ -1,13 +1,19 @@
+import animate from "tailwindcss-animate";
+
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+
+export default {
   darkMode: ["class"],
+
   content: [
     "./pages/**/*.{js,jsx}",
     "./components/**/*.{js,jsx}",
     "./app/**/*.{js,jsx}",
     "./src/**/*.{js,jsx}",
   ],
+
   prefix: "",
+
   theme: {
     container: {
       center: true,
@@ -16,8 +22,12 @@ module.exports = {
         "2xl": "1400px",
       },
     },
+
     extend: {
       colors: {
+        lightHover: "#fcf4ff",
+        darkHover: "#2a004a",
+        darkTheme: "#11001F",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -52,11 +62,25 @@ module.exports = {
           foreground: "hsl(var(--card-foreground))",
         },
       },
+
+      boxShadow: {
+        black: "4px 4px 0px 0px #000000",
+        white: "4px 4px 0px 0px #ffffff",
+      },
+
+      backgroundImage: {
+        "hero-gradient": `
+          radial-gradient(circle at 30% 40%, #e8d7d7, transparent 40%),
+          radial-gradient(circle at 70% 60%, #d9e2f2, transparent 40%)
+        `,
+      },
+
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+
       keyframes: {
         "accordion-down": {
           from: { height: "0" },
@@ -67,11 +91,13 @@ module.exports = {
           to: { height: "0" },
         },
       },
+
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+
+  plugins: [animate],
 };

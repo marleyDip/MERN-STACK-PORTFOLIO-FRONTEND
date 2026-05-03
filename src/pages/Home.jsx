@@ -1,25 +1,42 @@
-import Hero from "./sub-components/Hero";
-import Timeline from "./sub-components/Timeline";
-import About from "./sub-components/About";
-import Skills from "./sub-components/Skills";
-import Portfolio from "./sub-components/Portfolio";
-import Apps from "./sub-components/Apps";
-import Contact from "./sub-components/Contact";
+import { lazy } from "react";
 
-import Navbar from "./sub-components/Navbar";
+// Lazy load components
+const Hero = lazy(() => import("./sub-components/Hero"));
+const Timeline = lazy(() => import("./sub-components/Timeline"));
+const About = lazy(() => import("./sub-components/About"));
+const Skills = lazy(() => import("./sub-components/Skills"));
+const Portfolio = lazy(() => import("./sub-components/Portfolio"));
+const Apps = lazy(() => import("./sub-components/Apps"));
+const Contact = lazy(() => import("./sub-components/Contact"));
 
 const Home = () => {
   return (
-    <article className="px-5 mt-10 sm:mt-14 md:mt-16 lg:mt-24 xl:mt-32 sm:mx-auto w-full max-w-[1050px] flex flex-col gap-14">
-      <Navbar />
-      <Hero />
-      <Timeline />
-      <About />
-      <Skills />
-      <Portfolio />
-      <Apps />
-      <Contact />
-    </article>
+    <>
+      {/* Main Content */}
+      <main className="px-6 sm:px-8 mt-0 sm:mt-2 md:mt-6 sm:mx-auto w-full max-w-[1050px] flex flex-col gap-14">
+        <Hero />
+
+        <Timeline />
+
+        <section id="about">
+          <About />
+        </section>
+
+        <section id="portfolio">
+          <Portfolio />
+        </section>
+
+        <section id="skills">
+          <Skills />
+        </section>
+
+        <Apps />
+
+        <section id="contact">
+          <Contact />
+        </section>
+      </main>
+    </>
   );
 };
 

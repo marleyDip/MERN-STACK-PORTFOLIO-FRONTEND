@@ -1,81 +1,330 @@
-import { Menu, X } from "lucide-react";
-import { useState } from "react";
+import { useLenis } from "@/contexts/LenisContext";
+import { useTheme } from "@/contexts/ThemeContext";
+import { axiosInstance } from "@/utils/axiosInstance";
+import {
+  Facebook,
+  Github,
+  Linkedin,
+  Mail,
+  Menu,
+  Moon,
+  Phone,
+  Sun,
+  X,
+} from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
+  const [user, setUser] = useState({});
+  const lenis = useLenis();
+
+  // Fetch User
+  useEffect(() => {
+    const getMyProfile = async () => {
+      const { data } = await axiosInstance.get("/user/me/portfolio");
+
+      setUser(data.user);
+    };
+
+    getMyProfile();
+  }, []);
+
+  // Socials
+  const socials = [
+    {
+      icon: Phone,
+      href: user.phone ? `tel:${user.phone}` : null,
+      label: "Call",
+      color: "hover:text-green-500",
+    },
+    {
+      icon: Mail,
+      href: user.email ? `mailto:${user.email}` : null,
+      label: "Email",
+      color: "hover:text-pink-500",
+    },
+    {
+      icon: Facebook,
+      href: user.facebookURL,
+      label: "Facebook",
+      color: "hover:text-blue-500",
+    },
+    {
+      icon: Linkedin,
+      href: user.linkedInURL,
+      label: "LinkedIn",
+      color: "hover:text-sky-500",
+    },
+    {
+      icon: Github,
+      href: user.githubURL,
+      label: "GitHub",
+      color: "hover:text-gray-900 dark:hover:text-white",
+    },
+  ].filter((item) => item.href);
+
+  const { theme, toggleTheme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  const navRef = useRef();
+  const navLinkRef = useRef();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        navRef.current?.classList.add(
+          "bg-white",
+          "bg-opacity-50",
+          "backdrop-blur-lg",
+          "shadow-sm",
+          "dark:bg-darkTheme",
+          "dark:shadow-white/20",
+        );
+
+        navLinkRef.current?.classList.remove(
+          "bg-white",
+          "shadow-sm",
+          "bg-opacity-50",
+          "dark:border",
+          "dark:border-white/30",
+          "dark:bg-transparent",
+        );
+      } else {
+        navRef.current?.classList.remove(
+          "bg-white",
+          "bg-opacity-50",
+          "backdrop-blur-lg",
+          "shadow-sm",
+          "dark:bg-darkTheme",
+          "dark:shadow-white/20",
+        );
+
+        navLinkRef.current?.classList.add(
+          "bg-white",
+          "shadow-sm",
+          "bg-opacity-50",
+          "dark:border",
+          "dark:border-white/30",
+          "dark:bg-transparent",
+        );
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  // Navbar
+  // useEffect(() => {
+  //   window.addEventListener("scroll", () => {
+  //     if (scrollY > 50) {
+  //       navRef.current.classList.add(
+  //         "bg-white",
+  //         "bg-opacity-50",
+  //         "backdrop-blur-lg",
+  //         "shadow-sm",
+  //         "dark:bg-darkTheme",
+  //         "dark:shadow-white/20",
+  //       );
+  //       navLinkRef.current.classList.remove(
+  //         "bg-white",
+  //         "shadow-sm",
+  //         "bg-opacity-50",
+  //         "dark:border",
+  //         "dark:border-white/30",
+  //         "dark:bg-transparent",
+  //       );
+  //     } else {
+  //       navRef.current.classList.remove(
+  //         "bg-white",
+  //         "bg-opacity-50",
+  //         "backdrop-blur-lg",
+  //         "shadow-sm",
+  //         "dark:bg-darkTheme",
+  //         "dark:shadow-white/20",
+  //       );
+  //       navLinkRef.current.classList.add(
+  //         "bg-white",
+  //         "shadow-sm",
+  //         "bg-opacity-50",
+  //         "dark:border",
+  //         "dark:border-white/30",
+  //         "dark:bg-transparent",
+  //       );
+  //     }
+  //   });
+  // }, []);
+
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-4 lg:px-0">
-      <div className="max-w-7xl container mx-auto flex h-14 items-center">
-        <div className="md:mr-4 flex justify-between w-full ">
-          <a className="mr-6 flex items-center space-x-2 " href="#">
-            <img src="/logo.png" alt="" className="w-36" />
-          </a>
-          <nav className="md:flex hidden items-center space-x-6 text-lg font-medium ">
-            <a
-              className="transition-colors hover:text-foreground/80 text-foreground/60"
-              href="#About"
-            >
-              About
-            </a>
-
-            <a
-              className="transition-colors hover:text-foreground/80 text-foreground/60"
-              href="#Portfolio"
-            >
-              Portfolio
-            </a>
-
-            <a
-              className="transition-colors hover:text-foreground/80 text-foreground/60"
-              href="#Contact"
-            >
-              Contact
-            </a>
-          </nav>
-        </div>
-
-        <button
-          className="inline-flex items-center justify-center rounded-md md:hidden"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-        >
-          <span className="sr-only">Open main menu</span>
-          {mobileMenuOpen ? (
-            <X className="h-6 w-6" aria-hidden="true" />
-          ) : (
-            <Menu className="h-6 w-6" aria-hidden="true" />
-          )}
-        </button>
+    <>
+      <div className="fixed top-0 right-0 w-11/12 blur-3xl -z-10 translate-y-[-80%] dark:hidden">
+        <img src="header-bg-color.png" alt="" className="w-full" />
       </div>
 
-      {mobileMenuOpen && (
-        <div className="md:hidden">
-          <div className="space-y-1 px-2 pb-3 pt-2">
-            <a
-              href="#About"
-              className="block rounded-md px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900"
-            >
-              About
-            </a>
+      {/* Header */}
+      <header ref={navRef} className="fixed top-0 z-50 w-full py-4 mx-auto">
+        <nav className="max-w-[1050px] flex items-center justify-between px-6 sm:px-8 mx-auto">
+          {/* Logo */}
+          <Link
+            to="/"
+            onClick={() => lenis?.scrollTo(0)}
+            // onClick={() => window.scrollTo({ top: 0 })}
+            className="flex items-center text-xl sm:text-2xl font-bold text-primary hover:opacity-80"
+          >
+            Sofian Hasan
+          </Link>
 
-            <a
-              href="#Portfolio"
-              className="block rounded-md px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900"
-            >
-              Portfolio
-            </a>
+          {/* Desktop Menu */}
+          <ul
+            ref={navLinkRef}
+            className="hidden md:flex items-center text-lg font-medium gap-6 lg:gap-8 rounded-full px-12 py-3 bg-white shadow-sm bg-opacity-50 dark:border dark:border-white/30 dark:bg-transparent"
+          >
+            {["About", "Portfolio", "Skills", "Contact"].map((item, i) => {
+              const id = item.toLowerCase().replace(" ", "");
 
-            <a
-              href="#Contact"
-              className="block rounded-md px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900"
+              return (
+                <li key={i}>
+                  <Link
+                    to={`/#${id}`}
+                    className="hover:text-gray-500 dark:hover:text-gray-300 transition"
+                  >
+                    {item}
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+
+          {/* Actions Button */}
+          <div className="flex items-center gap-4">
+            {/* Theme Toggle */}
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-lg hover:bg-lightHover dark:hover:bg-darkHover transition-colors"
             >
-              Contact
-            </a>
+              {theme === "dark" ? (
+                <Sun className="w-5 h-5 text-foreground" />
+              ) : (
+                <Moon className="w-5 h-5 text-foreground" />
+              )}
+            </button>
+
+            {/* Open Mobile Menubar */}
+            <button
+              className="block md:hidden ml-3"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              <span className="sr-only">Open main menu</span>
+
+              <Menu className="h-6 w-6" aria-hidden="true" />
+            </button>
           </div>
+        </nav>
+      </header>
+
+      {/* MOBILE MENU */}
+      {/* OVERLAY */}
+      <div
+        onClick={() => setMobileMenuOpen(false)}
+        className={`fixed inset-0 z-40 bg-black/40 backdrop-blur-sm transition-opacity duration-300
+        ${
+          mobileMenuOpen
+            ? "opacity-100 pointer-events-auto"
+            : "opacity-0 pointer-events-none"
+        }`}
+      />
+
+      {/* MOBILE MENU */}
+      <div
+        onClick={(e) => e.stopPropagation()} // prevent closing when clicking inside
+        className={`fixed top-0 left-0 h-screen w-64 z-50 transform transition-transform duration-500
+        ${
+          mobileMenuOpen ? "-translate-x-0" : "-translate-x-full"
+        } bg-rose-50 dark:bg-darkHover dark:text-white shadow-xl`}
+      >
+        {/* HEADER */}
+        <div className="relative flex items-center justify-between border-b dark:border-white/30 border-gray-400/80 px-6 py-5">
+          {/* Logo */}
+          <Link
+            to="/"
+            onClick={() => {
+              setMobileMenuOpen(false);
+              lenis?.scrollTo(0);
+
+              // window.scrollTo({ top: 0 });
+            }}
+            className="text-xl font-bold text-primary hover:opacity-80"
+          >
+            Sofian Hasan
+          </Link>
+
+          {/* Close Button */}
+          <button onClick={() => setMobileMenuOpen(false)}>
+            <X className="h-6 w-6 hover:opacity-70 transition" />
+          </button>
         </div>
-      )}
-    </header>
+
+        {/* MENU */}
+        <ul className="flex flex-col gap-4 py-5 px-6">
+          {["About", "Portfolio", "Skills", "Contact"].map((item, i) => {
+            const id = item.toLowerCase().replace(" ", "");
+
+            return (
+              <li key={i}>
+                <Link
+                  to={`/#${id}`}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="inline-flex items-center text-lg font-semibold transition-all duration-300 hover:translate-x-1 hover:opacity-70"
+                >
+                  {item}
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+
+        {/* Social Links */}
+        <div className="flex flex-wrap items-center gap-3 px-3 py-5">
+          {socials.map(({ icon: Icon, href, label, color }, i) => (
+            <a
+              key={i}
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={label}
+              className={`p-2 rounded-full bg-white/40 backdrop-blur-md
+              dark:bg-white/10 transition-all duration-300 hover:-translate-y-1 hover:scale-110 hover:shadow-lg hover:shadow-black/10 dark:hover:shadow-white/10 ring-1 ring-black/5 dark:ring-white/10 ${color}`}
+            >
+              <Icon className="w-5 h-5" />
+            </a>
+          ))}
+        </div>
+      </div>
+    </>
   );
 };
 
 export default Navbar;
+
+/* <ul className="flex flex-col gap-4 py-5 px-6">
+    {["About", "Portfolio", "Skills", "Contact"].map((item, i) => (
+      <li
+        key={i}
+        className="transition-all duration-300 hover:translate-x-1"
+      >
+        <Link
+          to={`/#${item.toLowerCase().replace(" ", "")}`}
+          // href={`#${item.toLowerCase().replace(" ", "")}`}
+          onClick={() => setMobileMenuOpen(false)}
+          className="hover:opacity-70 transition text-lg font-semibold"
+        >
+          {item}
+        </Link>
+      </li>
+    ))}
+  </ul>
+*/
