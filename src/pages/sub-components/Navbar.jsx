@@ -2,6 +2,7 @@ import { useLenis } from "@/contexts/LenisContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import { axiosInstance } from "@/utils/axiosInstance";
 import {
+  CloudDownload,
   Facebook,
   Github,
   Linkedin,
@@ -166,7 +167,7 @@ const Navbar = () => {
       </div>
 
       {/* Header */}
-      <header ref={navRef} className="fixed top-0 z-50 w-full py-4 mx-auto">
+      <header ref={navRef} className="fixed top-0 z-50 w-full py-4 ">
         <nav className="max-w-[1050px] flex items-center justify-between px-6 sm:px-8 mx-auto">
           {/* Logo */}
           <Link
@@ -181,7 +182,7 @@ const Navbar = () => {
           {/* Desktop Menu */}
           <ul
             ref={navLinkRef}
-            className="hidden md:flex items-center text-lg font-medium gap-6 lg:gap-8 rounded-full px-12 py-3 bg-white shadow-sm bg-opacity-50 dark:border dark:border-white/30 dark:bg-transparent"
+            className="hidden md:flex items-center text-lg font-medium gap-6 lg:gap-8 rounded-full px-6 lg:px-12 py-3 bg-white shadow-sm bg-opacity-50 dark:border dark:border-white/30 dark:bg-transparent"
           >
             {["About", "Portfolio", "Skills", "Contact"].map((item, i) => {
               const id = item.toLowerCase().replace(" ", "");
@@ -200,27 +201,64 @@ const Navbar = () => {
           </ul>
 
           {/* Actions Button */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
+            {/* Download Resume */}
+            <a
+              href="https://drive.google.com/uc?export=download&id=11zJibj20bmlJfBKAfIanDEAROcCAiEES"
+              className="group relative inline-flex items-center justify-center px-4 py-2 rounded-full shadow-sm border border-black/20 dark:border-white/30 dark:shadow-white/20 text-black dark:text-white font-medium overflow-hidden"
+            >
+              {/* SVG Wave */}
+              <span className="absolute inset-0 z-0 overflow-hidden">
+                <svg
+                  className="absolute bottom-[-100%] left-0 w-full h-[200%] transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:bottom-0"
+                  viewBox="0 0 500 150"
+                  preserveAspectRatio="none"
+                >
+                  <path
+                    d="M0,80 C150,120 350,0 500,80 L500,150 L0,150 Z"
+                    // className="fill-black dark:fill-white"
+                    className="fill-indigo-500 dark:fill-purple-400"
+                  >
+                    <animate
+                      attributeName="d"
+                      // dur="3s"
+                      dur="6s"
+                      repeatCount="indefinite"
+                      values="
+                        M0,80 C150,120 350,0 500,80 L500,150 L0,150 Z;
+                        M0,60 C150,0 350,120 500,60 L500,150 L0,150 Z;
+                        M0,80 C150,120 350,0 500,80 L500,150 L0,150 Z
+                      "
+                    />
+                  </path>
+                </svg>
+              </span>
+
+              {/* Content */}
+              <span className="relative z-10 flex items-center gap-2 group-hover:text-white dark:group-hover:text-black transition-colors duration-300">
+                <CloudDownload className="w-4 h-4 transition-transform duration-300 group-hover:translate-y-0.5" />
+                <span className="hidden md:inline">Resume</span>
+              </span>
+            </a>
+
             {/* Theme Toggle */}
             <button
               onClick={toggleTheme}
-              className="p-2 rounded-lg hover:bg-lightHover dark:hover:bg-darkHover transition-colors"
+              className="p-2 rounded-full shadow-sm border border-black/20 dark:border-white/30 dark:shadow-white/20 hover:bg-lightHover dark:hover:bg-darkHover hover:scale-105 transition-all duration-300"
             >
               {theme === "dark" ? (
-                <Sun className="w-5 h-5 text-foreground" />
+                <Sun className="w-5 h-5 text-yellow-400" />
               ) : (
-                <Moon className="w-5 h-5 text-foreground" />
+                <Moon className="w-5 h-5 text-slate-700" />
               )}
             </button>
 
-            {/* Open Mobile Menubar */}
+            {/* Mobile Menu */}
             <button
-              className="block md:hidden ml-3"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden p-2 rounded-full shadow-sm border border-black/20 dark:border-white/30 dark:shadow-white/20 hover:bg-lightHover dark:hover:bg-darkHover hover:scale-105 transition-all duration-300"
             >
-              <span className="sr-only">Open main menu</span>
-
-              <Menu className="h-6 w-6" aria-hidden="true" />
+              <Menu className="h-5 w-5" />
             </button>
           </div>
         </nav>
@@ -309,6 +347,89 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+/* Wave Download Resume Button
+  <a
+    href="https://drive.google.com/uc?export=download&id=11zJibj20bmlJfBKAfIanDEAROcCAiEES"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="relative inline-flex items-center gap-2 px-5 py-2.5
+    rounded-full border border-black/20 dark:border-white/20
+    text-black dark:text-white text-sm font-medium
+    overflow-hidden group transition-all duration-300"
+  >
+    Liquid Background
+    <span
+      className="absolute inset-0 bg-black dark:bg-white
+      translate-y-full group-hover:translate-y-0
+      transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
+    />
+
+    <span
+      className="relative z-10 flex items-center gap-2
+          group-hover:text-white dark:group-hover:text-black transition-colors duration-300"
+    >
+      <CloudDownload className="w-4 h-4 transition-transform duration-300 group-hover:translate-y-0.5" />
+      <span className="hidden sm:inline">Resume</span>
+    </span>
+  </a>
+*/
+
+/* Download Resume Button
+  <a
+    href="/Md Sofian Hasan.pdf"
+    download
+    // download="Dip_Akand_Resume.pdf"
+    className="inline-flex items-center gap-2 px-6 py-1 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-medium rounded-full shadow-lg hover:scale-105 hover:shadow-xl transition-all duration-300"
+  >
+    Download resume
+  </a>
+
+  <a
+    href="/Md Sofian Hasan.pdf"
+    target="_blank"
+    rel="noopener noreferrer"
+
+    className="inline-flex items-center gap-2 p-2 rounded-xl dark:text-white hover:bg-lightHover text-black dark:hover:bg-darkHover transition-all duration-300"
+  >
+    <CloudDownload className="w-5 h-5" /> resume
+  </a>
+*/
+
+/* Actions Button
+  <div className="flex items-center gap-1">
+    <a
+      href="https://drive.google.com/uc?export=download&id=11zJibj20bmlJfBKAfIanDEAROcCAiEES"
+      target="_blank"
+      rel="noopener noreferrer"
+      title="Download Resume"
+      className="group inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white text-sm font-medium shadow-md hover:shadow-[0_0_20px_rgba(99,102,241,0.6)] transition-all duration-300 hover:scale-105 active:scale-95"
+    >
+      <CloudDownload className="w-4 h-4 transition-transform duration-300 group-hover:translate-y-0.5" />
+      <span className="hidden sm:inline">Resume</span>
+    </a>
+
+    <button
+      onClick={toggleTheme}
+      className="p-2 rounded-lg hover:bg-lightHover dark:hover:bg-darkHover transition-colors"
+    >
+      {theme === "dark" ? (
+        <Sun className="w-5 h-5 text-foreground" />
+      ) : (
+        <Moon className="w-5 h-5 text-foreground" />
+      )}
+    </button>
+
+    <button
+      className="block md:hidden ml-3"
+      onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+    >
+      <span className="sr-only">Open main menu</span>
+
+      <Menu className="h-6 w-6" aria-hidden="true" />
+    </button>
+  </div>
+*/
 
 /* <ul className="flex flex-col gap-4 py-5 px-6">
     {["About", "Portfolio", "Skills", "Contact"].map((item, i) => (

@@ -16,7 +16,7 @@ import { LenisProvider } from "./contexts/LenisProvider";
 // Global loader (Suspense fallback)
 const GlobalFallback = () => {
   return (
-    <div className="w-full h-screen flex items-center justify-center bg-white dark:bg-darkTheme">
+    <div className="w-full h-screen flex items-center justify-center">
       <div className="flex flex-col items-center gap-4">
         {/* Spinner */}
         <div className="w-32 h-32 border-b-2 border-lime-500 rounded-full animate-spin" />

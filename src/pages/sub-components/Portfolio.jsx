@@ -183,7 +183,7 @@ const Portfolio = () => {
                     ).map((tech, i) => (
                       <span
                         key={i}
-                        className="text-[6px] lg:text-[8px] px-2 lg:px-3 py-1 tracking-[0.2em] uppercase rounded-full bg-amber-300/10 border border-amber-300/30 text-amber-300 backdrop-blur-md transition-all duration-300 ease-out hover:bg-amber-300/20 hover:border-amber-300/60 hover:shadow-[0_0_12px_rgba(251,191,36,0.6)] hover:-translate-y-0.5 animate-[fadeInUp_0.5s_ease_forwards]"
+                        className="text-[5px] sm:text-[6px] lg:text-[8px] px-1 sm:px-2 lg:px-3 py-1 tracking-[0.2em] uppercase rounded-full bg-amber-300/10 border border-amber-300/30 text-amber-300 backdrop-blur-md transition-all duration-300 ease-out hover:bg-amber-300/20 hover:border-amber-300/60 hover:shadow-[0_0_12px_rgba(251,191,36,0.6)] hover:-translate-y-0.5 animate-[fadeInUp_0.5s_ease_forwards]"
                         style={{ animationDelay: `${i * 80}ms` }}
                       >
                         {tech.trim()}
