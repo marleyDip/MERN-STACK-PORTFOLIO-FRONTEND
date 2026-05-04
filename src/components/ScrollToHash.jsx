@@ -18,7 +18,7 @@ const ScrollToHash = () => {
         offset: -90,
         duration: 1.2,
       });
-    }, 500);
+    }, 800);
 
     return () => clearTimeout(timer);
   }, [hash, pathname, lenis]);
